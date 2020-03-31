@@ -46,7 +46,7 @@ pipeline {
         }
         stage('test') {
             steps {
-               echp "sh 'mvn test'"
+               echo "sh 'mvn test'"
             }
         }
         stage('integration test') {
