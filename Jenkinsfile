@@ -25,7 +25,7 @@ pipeline {
         PATH = "$dockerHome/bin:$mavenHome/bin:$PATH"
     }
     stages {
-        stage('build') {
+        stage('Checkout') {
             steps {
                sh 'mvn --version'
                sh 'docker --version'
@@ -39,16 +39,38 @@ pipeline {
                
             }
         }
+        stage {
+            steps {
+                sh "mvn clean package"
+            }
+        }
         stage('test') {
             steps {
-               echo "Test stage"
+               sh "mvn test"
             }
         }
         stage('integration test') {
             steps {
-               echo "Integration Test stage"
+               sh "mvn failsafe:integration-test failsafe:verify"
             }
         }
+        /* stage('build docker image') {
+            steps {
+                // sh "docker build -t galaxyhightech/jenkins-devops-currency-exchange:$env.BUILD_TAG"
+                script {
+                    dockerImage = docker.image("galaxyhightech/jenkins-devops-currency-exchange:${env.BUILD_TAG}")
+                }
+            }
+        }
+        stage('push docker image') {
+            steps {
+                script {
+                    docker.registerWith('', 'dockerhub') {
+
+                    }
+                }
+            }
+        } */
     }
     post {
         always {
