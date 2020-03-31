@@ -46,15 +46,20 @@ pipeline {
         }
         stage('test') {
             steps {
-               sh "mvn test"
+               echp "sh 'mvn test'"
             }
         }
         stage('integration test') {
             steps {
-               sh "mvn failsafe:integration-test failsafe:verify"
+               echo 'sh "mvn failsafe:integration-test failsafe:verify"'
             }
         }
-        /* stage('build docker image') {
+        stage('Package') {
+            steps {
+                sh "mvn package -DskipTests"
+            }
+        }
+        stage('build docker image') {
             steps {
                 // sh "docker build -t galaxyhightech/jenkins-devops-currency-exchange:$env.BUILD_TAG"
                 script {
@@ -66,11 +71,12 @@ pipeline {
             steps {
                 script {
                     docker.registerWith('', 'dockerhub') {
-
+                        dockerImage.push();
+                        dockerImage.push('latest')
                     }
                 }
             }
-        } */
+        } 
     }
     post {
         always {

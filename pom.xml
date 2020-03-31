@@ -165,44 +165,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${surefire.version}</version>
-				<configuration>
-					<!-- JDK 7 - relax bytecode verifier to prevent double -->
-					<!-- instrumentation issues with OpenJPA tests and JaCoCo -->
-					<!-- <argLine>-XX:-UseSplitVerifier ${jacoco.utAgentConfig}</argLine> -->
-					<!-- JDK 8 - bytecode verifier cannot be relaxed or disabled -->
-					<!-- to prevent runtime errors, OpenJPA tests are ignored -->
-					<argLine>${jacoco.utAgentConfig}</argLine>
-					<excludes>
-						<!--<exclude>**/*ApplicationTests.java</exclude> -->
-						<exclude>**/RunCucumberIntegrationTestCase.java</exclude>
-					</excludes>
-					<properties>
-						<!-- add SonarQube's JaCoCo listener to enable -->
-						<!-- gathering of code coverage metrics per test -->
-						<property>
-							<name>listener</name>
-							<value>org.sonar.java.jacoco.JUnitListener</value>
-						</property>
-					</properties>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${failsafe.version}</version>
-				<configuration>
-					<!-- JaCoCo must be enabled on target app container -->
-					<!--<argLine>${jacoco.itAgentConfig}</argLine> -->
-					<includes>
-						<!--<include>**/*ApplicationTests.java</include> -->
-						<include>**/*CucumberIntegrationTestCase.java</include>
-					</includes>
-				</configuration>
-			</plugin>
 	</build>
 
 	<repositories>
